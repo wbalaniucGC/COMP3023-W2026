@@ -3,18 +3,32 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement settings")]
     public float moveSpeed = 5.0f;
-    public float jumpForce = 5.0f;
+
+    [Header("Jump Settings")]
+    public float jumpForce = 5.0f;      // The force of the jump
+    public LayerMask groundLayer;       // Checking to see if I'm standing on the ground.
+    public Transform groundCheck;       // Position of my ground check
+    public float groundCheckRadius;     // Size of my ground check.
+
 
     private Vector2 moveInput;
     private Rigidbody2D rBody;
     private Animator anim;
     private bool jumpTriggered = false;
+    private bool isGrounded = false;
 
     private void Awake()
     {
         rBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        Debug.Log("Is grounded? " + isGrounded);
     }
 
     private void FixedUpdate()

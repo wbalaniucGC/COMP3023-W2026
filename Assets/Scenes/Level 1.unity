@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 117563953}
   - component: {fileID: 117563955}
   - component: {fileID: 117563954}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1506,6 +1506,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 10
   jumpForce: 20
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheck: {fileID: 0}
+  groundCheckRadius: 0
 --- !u!114 &1311062735
 MonoBehaviour:
   m_ObjectHideFlags: 0
