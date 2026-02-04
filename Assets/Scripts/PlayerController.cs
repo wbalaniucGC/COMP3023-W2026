@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         rBody.linearVelocity = new Vector2(moveX, rBody.linearVelocity.y);
 
         // Jump logic
-        if(jumpTriggered)
+        if(jumpTriggered && isGrounded)
         {
             // Reset my vertical velocity first to ensure consistent jump heights
             rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, 0);
