@@ -15,6 +15,9 @@ public class Cherry : MonoBehaviour
                 Instantiate(itemFeedbackPrefab, transform.position, Quaternion.identity);
             }
 
+            // Increment my cherry pickup counter
+            ResourceManager.Instance.AddCherry();
+
             // Remove the Cherry
             Destroy(gameObject);
         }
