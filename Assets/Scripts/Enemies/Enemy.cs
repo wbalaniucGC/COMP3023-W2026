@@ -1,68 +1,138 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
-public class Enemy : MonoBehaviour
+/*
+ *  Enemy will move between waypoints. When the enemy arrives at a waypoint, it will wait, then move
+ *  to the next waypoint. 
+ */ 
+public abstract class Enemy : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float speed = 2f;
-    public float patrolDistance = 3f;
+    public float speed = 2.0f;              // Movement speed
+    public float waitTime = 1.0f;           // How long do I wait at the waypoint
+    public float arrivalThreshold = 0.1f;   // How close to the waypoint before I have "arrived"
 
-    private Vector2 startPosition;
-    private int direction = -1;  // -1 = right , -1 = left
-    private SpriteRenderer sRend;
+    protected List<Transform> waypoints = new List<Transform>();        // Collection of waypoints
+    protected int currentIndex = 0;                                     // Current waypoint
+    protected bool isWaiting = false;                                   // Am I waiting for "waitTime" at the waypoint?
+    protected int direction = -1;                                       // -1 is for left, 1 is for right
+    protected SpriteRenderer sRend;                                     // Reference to flip the sprite
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        startPosition = transform.position;         // Stores the initial position
-        sRend = GetComponent<SpriteRenderer>();     // Caches a reference to the SpriteRenderer
-    }
+        // Initialization
+        // Find the SpriteRenderer
+        sRend = GetComponentInChildren<SpriteRenderer>();
 
-    private void Update()
-    {
-        // Calculate the movement this frame
-        float movement = direction * speed * Time.deltaTime;
-        transform.Translate(movement, 0, 0);
+        // Find the "Path" child and detach waypoints so they are still in the world.
+        Transform pathContainer = transform.Find("Path");
 
-        // Check if we've reached the patrol boundary
-        // (Current position) - (Start Position) >= patrolDistance
-        // Flip is true
-        if(Mathf.Abs(transform.position.x - startPosition.x) >= patrolDistance)
+        // Safety check
+        if(pathContainer != null)
         {
-            Flip();
+            // If my path container exists!
+            // Cycle through all child objects of my path container and add it to my waypoints.
+            foreach (Transform child in pathContainer)
+            {
+                waypoints.Add(child);
+            }
+
+            // Detach the Path from the enemy
+            pathContainer.SetParent(null);
+        }
+
+        // Initialize position at my first waypoint
+        if(waypoints.Count > 0)
+        {
+            transform.position = waypoints[0].position; // Sets the enemy position to the first waypoint position
         }
     }
 
-    private void Flip()
+    protected virtual void Update()
     {
-        direction *= -1;    // Flip direction
-        sRend.flipX = (direction == 1);      // Flip sprite visual
+        // Don't move if we don't have enough waypoints or we are waiting.
+        if(waypoints.Count < 2 || isWaiting)
+        {
+            return;
+        }
 
-        // Potential bug that we will fix if needed. 
-        // Graphic bug. Stuck in flip-loop
-        // Reset position slightliy to prevent getting stuck in the flip-loop.
-        float resetX = startPosition.x + (patrolDistance * (direction * -1));
-        transform.position = new Vector3(resetX, transform.position.y, transform.position.z);
+        HandleMovement();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Move to the next waypoint
+    protected virtual void HandleMovement()
     {
-        if(collision.gameObject.CompareTag("Player"))
+        Transform target = waypoints[currentIndex]; // Save my current target waypoint
+
+        // Create a horizonal-only target to ignore waypoint height.
+        Vector2 horizontalTarget = new Vector2(target.position.x, transform.position.y);
+        
+        // Use below if your game is a top-down game. Use above if your game is a 2d platformer.
+        // Vector2 horizontalTarget = new Vector2(target.position.x, target.position.y);
+
+        // Move the object toward the waypoint.
+        transform.position = Vector2.MoveTowards(transform.position, horizontalTarget, speed * Time.deltaTime);
+
+        // Check distance only on the x axis to trigger the next point
+        if(Mathf.Abs(transform.position.x - target.position.x) < arrivalThreshold)
         {
-            // You hit the player
-            Debug.Log("Player Hit! Hahahahah");
+            // Reached my destination. Wait at the waypoint
+            StartCoroutine(WaitAtWaypoint());
         }
     }
 
-    private void OnDrawGizmos() // OnDrawGizmosSelected()
+    protected virtual IEnumerator WaitAtWaypoint()
     {
-        Gizmos.color = Color.red;
+        isWaiting = true;
+        yield return new WaitForSeconds(waitTime);
 
-        // Determine the start point for our Gizmo
-        Vector3 center = Application.isPlaying ? (Vector3)startPosition : transform.position;
+        // After waiting for "waitTime" seconds
+        currentIndex = (currentIndex + 1) % waypoints.Count;    // Cycles through waypoints
 
-        // Draw a line representing the full patrol path
-        Vector3 leftPoint = center + Vector3.left * patrolDistance;
-        Vector3 rightPoint = center + Vector3.right * patrolDistance;
+        UpdateDirection();
+        isWaiting = false;
+    }
 
-        Gizmos.DrawLine(leftPoint, rightPoint);
+    protected virtual void UpdateDirection()
+    {
+        // Determine if the next waypoint is to the right or left of the current position
+        direction = (waypoints[currentIndex].position.x > transform.position.x) ? 1 : -1;   // Ternary 
+
+        // Flip the sprite as needed
+        // Safety check!
+        if(sRend != null)
+        {
+            // Flip the sprite based on the calculate direction
+            sRend.flipX = (direction == 1);
+        }
+    }
+
+    public abstract void TakeDamage();
+
+    protected virtual void OnDrawGizmos()
+    {
+        // Visualize the path and turn zones in the Unity editor
+        Transform path = transform.Find("Path");
+
+        // Safety check!
+        if (path == null || path.childCount < 2) return;
+
+        for(int i = 0; i < path.childCount; i++)
+        {
+            Vector3 pos = path.GetChild(i).position;
+
+            // Draw a vertical line to show the "Horizontal Turn Zone"
+            Gizmos.color = Color.purple;
+            Gizmos.DrawLine(pos + Vector3.up * 2, pos + Vector3.down * 2);
+
+            // Draw the red path lines between waypoints
+            Gizmos.color = Color.red;
+            Vector3 next = path.GetChild((i + 1) % path.childCount).position;
+            Gizmos.DrawLine(pos, next);
+
+            // Draw a small wire sphere at the point
+            Gizmos.DrawWireSphere(pos, 0.2f);
+        }
     }
 }
