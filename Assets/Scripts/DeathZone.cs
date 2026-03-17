@@ -13,6 +13,9 @@ public class DeathZone : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            // Tell the static manager we lost a life
+            GameManager.RemoveLife();
+
             // Restart the level
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
