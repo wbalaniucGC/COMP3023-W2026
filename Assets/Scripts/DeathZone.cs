@@ -12,6 +12,8 @@ public class DeathZone : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            GameManager.RemoveLife();
+
             int index = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(index);
         }

@@ -13,6 +13,9 @@ public abstract class Enemy : MonoBehaviour
     public float waitTime = 1.0f;           // How long do I wait at the waypoint
     public float arrivalThreshold = 0.1f;   // How close to the waypoint before I have "arrived"
 
+    [Header("Combat Settings")]
+    public int scoreValue = 10;
+
     protected List<Transform> waypoints = new List<Transform>();        // Collection of waypoints
     protected int currentIndex = 0;                                     // Current waypoint
     protected bool isWaiting = false;                                   // Am I waiting for "waitTime" at the waypoint?

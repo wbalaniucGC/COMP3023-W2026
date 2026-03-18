@@ -21,6 +21,8 @@ public class Opossum : Enemy
     {
         Debug.Log("Opossum was stomped!");
 
+        GameManager.AddScore(scoreValue);
+
         Destroy(gameObject);
     }
 }

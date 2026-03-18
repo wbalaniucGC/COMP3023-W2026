@@ -226,6 +226,7 @@ MonoBehaviour:
   speed: 2
   waitTime: 1
   arrivalThreshold: 0.1
+  scoreValue: 50
 --- !u!50 &5093244537229565113
 Rigidbody2D:
   serializedVersion: 5
