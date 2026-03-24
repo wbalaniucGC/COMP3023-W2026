@@ -8,6 +8,11 @@ public class Eagle : Enemy
 
         GameManager.AddScore(scoreValue);
 
+        if (deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
 }

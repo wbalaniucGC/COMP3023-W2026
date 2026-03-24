@@ -16,6 +16,9 @@ public abstract class Enemy : MonoBehaviour
     [Header("Combat Settings")]
     public int scoreValue = 100;
 
+    [Header("Visual Effects")]
+    public GameObject deathEffectPrefab;
+
     protected List<Transform> waypoints = new List<Transform>();        // Collection of waypoints
     protected int currentIndex = 0;                                     // Current waypoint
     protected bool isWaiting = false;                                   // Am I waiting for "waitTime" at the waypoint?

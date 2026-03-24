@@ -24,6 +24,11 @@ public class Opossum : Enemy
         // 1. Tell the GameManager to add points.
         GameManager.AddScore(scoreValue);
 
+        if(deathEffectPrefab != null)
+        {
+            Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+        }
+
         Destroy(gameObject);
     }
 }
