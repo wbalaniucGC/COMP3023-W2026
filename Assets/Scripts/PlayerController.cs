@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        // Debug.Log("Is grounded? " + isGrounded);
+
+        anim.SetBool("isGrounded", isGrounded);
 
         // NEW: Check for stomp every frame we are falling
         if (rBody.linearVelocity.y < -0.1f)
@@ -72,6 +73,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Animator logic
+        anim.SetFloat("yVelocity", rBody.linearVelocity.y);
         anim.SetFloat("xVelocity", Mathf.Abs(rBody.linearVelocity.x));
 
         // Handle sprite flips
