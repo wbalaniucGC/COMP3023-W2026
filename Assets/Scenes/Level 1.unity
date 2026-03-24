@@ -5798,65 +5798,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2881467360954722205, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2901282226441109138, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6.95
-      objectReference: {fileID: 0}
-    - target: {fileID: 2901282226441109138, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 3832774547563745613, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: speed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3832774547563745613, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: waitTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019929682687118847, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5.48
-      objectReference: {fileID: 0}
-    - target: {fileID: 4019929682687118847, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4387968247169137273, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4387968247169137273, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4715135213310501708, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4970519421772996342, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8428443491447501320, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8428443491447501320, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 8825512192609625123, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
       propertyPath: m_Name
       value: Opossum
-      objectReference: {fileID: 0}
-    - target: {fileID: 8825512192609625123, guid: b5021063011c93e4fadd0eb468f1437b, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
